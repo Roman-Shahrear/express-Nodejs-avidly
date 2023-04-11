@@ -1,0 +1,5 @@
+{
+    "javascript.validate.enable": true,
+    "javascript.suggestionActions.enabled": false,
+    "cSpell.diagnosticLevel": "Hint",
+}
