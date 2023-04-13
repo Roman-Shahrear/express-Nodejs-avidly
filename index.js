@@ -1,10 +1,22 @@
+const morgan = require('morgan');
+const helmet = require('helmet');
 const express = require('express');
 const dotenv = require('dotenv');
 const Joi = require('joi');
+const  logger  = require('./logger');
 dotenv.config();
 
 const app = express();
-app.use(express.json());
+//adding json middleware function
+app.use(express.json()); //json req.body
+app.use(express.urlencoded({ extended: true })); //key=value&key=value
+app.use(express.static('public'));
+app.use(helmet());
+app.use(morgan('tiny'));
+// after adding we need to install this middleware function in request pipeline by calling
+app.use(logger.log);
+app.use(logger.authentication);
+
 
 const port = process.env.PORT || 3000;
 const environment = process.env.ENVIRONMENT || 'development';
@@ -32,6 +44,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/genres', (req, res) => {
+    // to read query string by parameters(?sortBy=name)
+    // const sortBy = req.params.sortBy;
+    // return(movies)
     res.send(movies);
 });
 
